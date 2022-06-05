@@ -11,7 +11,7 @@ type APIOptions func(*Option)
 
 func WithLogger(l Logger) APIOptions {
 	return func(o *Option) {
-		o.logger = o.logger
+		o.logger = l
 	}
 }
 

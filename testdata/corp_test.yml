@@ -1,0 +1,6 @@
+enterprise:
+  corp_id: your_corp_id 
+  apps:
+    -
+      agentid: 00001 
+      secret: secret 

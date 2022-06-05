@@ -2,8 +2,6 @@ package qwapi
 
 import (
 	"context"
-	"net/http"
-	"time"
 
 	"github.com/dghubble/sling"
 )
@@ -16,21 +14,27 @@ type API struct {
 	client *sling.Sling
 }
 
-func (a *API) AccessTokenService(secret string) {
+func NewAPI(corpId string, options ...APIOptions) *API {
+	o := &Option{}
+	for _, v := range options {
+		v(o)
+	}
 
-}
-
-func NewAPI(corpId string) *API {
-	return &API{CorpId: corpId}
+	if o.httpClient == nil {
+		o.httpClient = defaultHttpClient
+	}
+	if o.logger == nil {
+		o.logger = &emptyLogger{}
+	}
+	return &API{
+		CorpId: corpId,
+		logger: o.logger,
+		client: sling.New().Client(o.httpClient).New().Base(baseURL),
+	}
 }
 
 func (a API) CustomerService(secret string) {
 
-}
-
-type AccessToken struct {
-	Value   string    // accesstoken 值
-	Expired time.Time // 过期时间点
 }
 
 var AccessTokenGetter func(ctx context.Context, secret string) (AccessToken, error)
